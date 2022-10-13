@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebAPP_SIBKMNET.Context;
+using WebApplicationMVC_SIBKM.Handler;
 using WebApplicationMVC_SIBKM.Repositories.Data;
 
 namespace WebApplicationMVC_SIBKM
@@ -30,6 +31,7 @@ namespace WebApplicationMVC_SIBKM
 
             //dependency injection
             services.AddScoped<ProvinceRepository>();
+            
             services.AddScoped<AccountRepository>();
             services.AddSession(options =>
             {

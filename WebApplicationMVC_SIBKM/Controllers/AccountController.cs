@@ -22,9 +22,27 @@ namespace WebApplicationMVC_SIBKM.Controllers
             return View();
         }
 
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Register(Register register)
+        {
+            var data = accountRepository.Register(register);
+            if (data > 0)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            return View();
+        }
+
+
+
         [HttpPost]
         //[ValidateAntiForgeryToken]
-        public IActionResult Login([FromForm]Login login)
+        public IActionResult Login(Login login)
         {
             if (ModelState.IsValid)
             {
@@ -38,7 +56,7 @@ namespace WebApplicationMVC_SIBKM.Controllers
                     HttpContext.Session.SetString("Role", data.Role);
                     return RedirectToAction("Index", "Province");
                 }
-                return View();
+                return RedirectToAction("Unauthorized", "ErrorPage");
             }
             return View();
         }

@@ -53,6 +53,7 @@ namespace WebApplicationMVC_SIBKM.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Province province)
         {
+
             if (ModelState.IsValid)
             {
                 //myContext.Provinces.Add(province);
@@ -90,7 +91,7 @@ namespace WebApplicationMVC_SIBKM.Controllers
                 if (result > 0)
                     return RedirectToAction("Index");
             }
-            return View();
+            return View(province);
         }
 
         //DELETE
@@ -106,14 +107,14 @@ namespace WebApplicationMVC_SIBKM.Controllers
         //POST - ngirim data berupa data yang sesuai dengan di model
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirm(Province province)
+        public IActionResult Delete(Province province)
         {
             //myContext.Provinces.Remove(province);
             //var result = myContext.SaveChanges();
             var result = ProvinceRepository.Delete(province);
             if (result > 0)
                 return RedirectToAction("Index");
-            return View();
+            return View(province);
         }
     }
 }

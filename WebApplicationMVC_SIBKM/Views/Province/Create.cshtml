@@ -4,7 +4,7 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<h1>Create Place</h1>
 
 <h4>Province</h4>
 <hr />
@@ -21,8 +21,9 @@
                 <label asp-for="RegionId" class="control-label"></label>
                 <select asp-for="RegionId" class="form-control" asp-items="ViewBag.RegionId">
                     <option></option>
-                    <option value="1"> GMT + 7 </option>
-                    <option value="2"> GMT + 8 </option>
+                    <option value="1"> Waktu Indonesia Barat </option>
+                    <option value="2"> Waktu Indonesia Tengah </option>
+                    <option value="3"> Waktu Indonesia Timur </option>
 
                 </select>
             </div>

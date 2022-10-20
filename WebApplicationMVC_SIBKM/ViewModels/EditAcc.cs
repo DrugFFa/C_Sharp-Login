@@ -5,11 +5,12 @@ using System.Threading.Tasks;
 
 namespace WebApplicationMVC_SIBKM.ViewModels
 {
-    public class ForgotPass
+    public class EditAcc
     {
         public int Id { get; set; }
         public string Email { get; set; }
-        public string DefPass { get; set; }
-        public string Role { get; set; }
+        public string OldPass { get; set; }
+        
+        public string NewPass { get; set; }
     }
 }

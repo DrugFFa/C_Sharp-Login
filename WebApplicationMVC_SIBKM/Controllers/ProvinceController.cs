@@ -12,13 +12,16 @@ namespace WebApplicationMVC_SIBKM.Controllers
     public class ProvinceController : Controller
     {
         ProvinceRepository ProvinceRepository;
+        
 
         public ProvinceController(ProvinceRepository ProvinceRepository)
         {
             this.ProvinceRepository = ProvinceRepository;
         }
 
+
         Province province = new Province();
+
         //GET ALL
         //GET
         public IActionResult Index()
@@ -41,6 +44,7 @@ namespace WebApplicationMVC_SIBKM.Controllers
             var data = ProvinceRepository.Get(id);
             return View(data);
         }
+      
         //CREATE
         //GET
         public IActionResult Create()

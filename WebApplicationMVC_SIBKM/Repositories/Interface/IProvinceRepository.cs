@@ -11,7 +11,7 @@ namespace WebApplicationMVC_SIBKM.Repositories.Interface
         List<Province> Get();
         Province Get(int id);
         int Post(Province province);
-        int Put(int id, Province province);
+        int Put(int id, Province province );
         int Delete(Province province);
     }
 }

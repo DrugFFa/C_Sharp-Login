@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 
 namespace WebApplicationMVC_SIBKM.ViewModels
 {
-    public class ForgotPass
+    public class Forgot
     {
-        public int Id { get; set; }
         public string Email { get; set; }
-        public string DefPass { get; set; }
-        public string Role { get; set; }
+        public string DefPass { get; set; } = "j3tt";
+
+        public string Default { get; set; }
     }
 }

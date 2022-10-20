@@ -21,6 +21,56 @@ namespace WebApplicationMVC_SIBKM.Repositories.Data
             
         }
        
+        public ForgotPass Forgot(Forgot forgot)
+        {
+            var defpass = Hashing.HashPassword(forgot.DefPass);
+            var data = myContext.UserRoles
+                .Include(x => x.Role)
+                .Include(x => x.User)
+                .Include(x => x.User.Employee)
+                .FirstOrDefault(x => x.User.Employee.Email.Equals(forgot.Email));
+            var verify = Hashing.ValidatePassword(forgot.Default, defpass);
+
+            if (verify)
+            {
+                var fpass = new ForgotPass()
+                {
+                    Id = data.User.Employee.Id,
+                    Role = data. Role.Name,
+                    Email = data.User.Employee.Email,
+                    
+                };
+                return fpass;
+            }
+
+            return null;
+        }
+
+        public int EditAcc(EditAcc editAcc)
+        {
+            var oldpass = editAcc.OldPass;
+            var newpass = editAcc.NewPass;
+            var data = myContext.UserRoles
+                  .Include(x => x.Role)
+                  .Include(x => x.User)
+                  .Include(x => x.User.Employee)
+                  .FirstOrDefault(x => x.User.Employee.Email.Equals(editAcc.Email));
+            int id = myContext.Employees.SingleOrDefault(x => x.Email.Equals(editAcc.Email)).Id;
+            var verify = Hashing.ValidatePassword(editAcc.OldPass, data.User.Password);
+
+            if (verify)
+            {
+                User user = new User()
+                {
+                    
+                    Password = Hashing.HashPassword(newpass)
+                };
+                myContext.Users.Update(user);
+                var resultUser = myContext.SaveChanges();
+            }
+            return 0;
+        }
+
         public int Register(Register register)
         {
             try
@@ -31,6 +81,7 @@ namespace WebApplicationMVC_SIBKM.Repositories.Data
                     Email = register.Email
                 };
                 myContext.Employees.Add(employee);
+
                 var resultEmployee = myContext.SaveChanges();
                 if (resultEmployee > 0)
                 {
@@ -42,18 +93,20 @@ namespace WebApplicationMVC_SIBKM.Repositories.Data
                     };
                     myContext.Users.Add(user);
                     var resultUser = myContext.SaveChanges();
-                    if(resultUser > 0)
+                    if (resultUser > 0)
                     {
                         UserRole userRole = new UserRole()
                         {
-                           UserId = id,
-                           RoleId = register.RoleId
-                           
+                            UserId = id,
+                            RoleId = register.RoleId
+
                         };
                         myContext.UserRoles.Add(userRole);
                         var resultUserRole = myContext.SaveChanges();
                         if (resultUserRole > 0)
-                           return resultUserRole;
+                        {
+                            return resultUserRole;
+                        }
                         myContext.Users.Remove(user);
                         myContext.SaveChanges();
                         myContext.Employees.Remove(employee);
@@ -65,12 +118,13 @@ namespace WebApplicationMVC_SIBKM.Repositories.Data
                     return 0;
                 }
                 return 0;
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.InnerException);
             }
             return 0;
-            
+
         }
         public ResponseLogin Login(Login login)
         {
@@ -78,10 +132,10 @@ namespace WebApplicationMVC_SIBKM.Repositories.Data
                 .Include(x => x.Role)
                 .Include(x => x.User)
                 .Include(x => x.User.Employee)
-                .FirstOrDefault(x => x.User.Employee.Email.Equals(login.Email) &&
-                                     x.User.Password.Equals(login.Password));
+                .FirstOrDefault(x => x.User.Employee.Email.Equals(login.Email));
+            var verify = Hashing.ValidatePassword(login.Password, data.User.Password);
 
-            if (data != null)
+            if (verify)
             {
                 var response = new ResponseLogin()
                 {
@@ -94,6 +148,11 @@ namespace WebApplicationMVC_SIBKM.Repositories.Data
             }
             return null;
         }
+
+       
+   
+
+       
 
     }
 }

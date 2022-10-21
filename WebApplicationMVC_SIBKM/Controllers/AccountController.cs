@@ -38,11 +38,11 @@ namespace WebApplicationMVC_SIBKM.Controllers
         }
 
         [HttpPost]
-        public IActionResult EditAcc(EditAcc editAcc)
+        public IActionResult EditAcc(int id, EditAcc editAcc)
         {
             //MASIH BELOM
 
-            var data = accountRepository.EditAcc(editAcc);
+            var data = accountRepository.EditAcc(id, editAcc);
             if (data > 0)
             {
                 return RedirectToAction("Login", "Account");

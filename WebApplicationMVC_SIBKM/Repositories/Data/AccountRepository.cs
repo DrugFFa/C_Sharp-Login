@@ -46,27 +46,34 @@ namespace WebApplicationMVC_SIBKM.Repositories.Data
             return null;
         }
 
-        public int EditAcc(EditAcc editAcc)
+        public int EditAcc(int id, EditAcc editAcc)
         {
             var oldpass = editAcc.OldPass;
             var newpass = editAcc.NewPass;
             var data = myContext.UserRoles
-                  .Include(x => x.Role)
-                  .Include(x => x.User)
-                  .Include(x => x.User.Employee)
-                  .FirstOrDefault(x => x.User.Employee.Email.Equals(editAcc.Email));
-            int id = myContext.Employees.SingleOrDefault(x => x.Email.Equals(editAcc.Email)).Id;
+                .Include(x => x.Role)
+                .Include(x => x.User)
+                .Include(x => x.User.Employee)
+                .FirstOrDefault(x => x.User.Employee.Email.Equals(editAcc.Email));
+            var data1 = myContext.Users.Find(data.UserId);
+
             var verify = Hashing.ValidatePassword(editAcc.OldPass, data.User.Password);
 
             if (verify)
             {
-                User user = new User()
-                {
-                    
-                    Password = Hashing.HashPassword(newpass)
-                };
-                myContext.Users.Update(user);
-                var resultUser = myContext.SaveChanges();
+                
+                data1.Password = Hashing.HashPassword(newpass);
+
+            //    User user = new User()
+            //    {
+            //        Id = data1.Id,
+            //        Password = Hashing.HashPassword(newpass)
+            //};
+
+                //myContext.Users.Update(data1);
+                myContext.Entry(data1).State = EntityState.Modified;
+                var result = myContext.SaveChanges();
+                return result;
             }
             return 0;
         }
